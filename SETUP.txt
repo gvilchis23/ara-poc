@@ -1,0 +1,69 @@
+The instructions in this document and the accompanying private library access are for trial purposes only. A fully executed Broadleaf Commerce Enterprise license is required for anything other than internal evaluation purposes.
+I have created a trial account for you on our nexus. You should have received a separate email from the nexus application detailing your new username and password. Let me know if you do not receive these credentials.
+
+To access the modules, the following repositories should be added to your implementation’s top-level pom.xml file (this is already done for you in the eval project):
+
+<repositories>
+…
+	<repository>
+		<id>enterprise-trial</id>
+		<name>enterprise-trial</name>
+		<url>http://nexus.broadleafcommerce.org/nexus/content/repositories/enterprise-basic-trial</url>
+	</repository>
+	<repository>
+		<id>enterprise-trial-releases</id>
+		<name>enterprise-trial-releases</name>
+		<url>http://nexus.broadleafcommerce.org/nexus/content/repositories/enterprise-basic-trial-releases</url>
+	</repository>
+…
+</repositories>
+
+You will also need to make sure you include your company credentials in your maven settings.xml
+
+<servers>
+…
+<server>
+<id>enterprise-trial</id>
+<username>your username</username>
+<password>your password</password>
+</server>
+<server>
+<id>enterprise-trial-releases</id>
+<username>your username</username>
+<password>your password</password>
+</server>
+…
+</servers>
+
+The sample project is configured for enterprise workflow support. In addition, it is configured for the advanced offer, custom field, price list, scheduled jobs and events, and theme modules. This is a good starting point for evaluating enterprise features.
+
+Configuration and Demonstration Steps - 
+	a) You should have a local instance of MySql running that has a schema available at the jdbc url you include in your jvm params.
+	b) You should include the mysql jdbc driver in the lib directory of Tomcat so it's available on the classpath
+	c) Run mvn install in the root directory of this project to build it (making sure your trial credentials are appropriately set in your maven settings.xml)
+	d) Copy the resulting admin.war and mycompany.war from the maven project target directories to your Tomcat webapps directory. Rename mycompany.war to ROOT.war.
+	e) Make sure the following properties are defined. If you use the attached override.properties file, this is already done for you (see below):
+		site.baseurl.domain=localhost
+		site.baseurl.port=8080 
+		site.baseurl.secure=false
+		crossapp.requireSsl=false
+	f) Start Tomcat using the JVM params mentioned below.
+	g) Access the admin for the site at: http://localhost:8080/admin (username: admin / password: admin)
+	h) Access the site at http://localhost.com:8080
+
+Additional Notes - 
+
+Here are sample JVM parameters that you should pass to Tomcat at startup. An easy way to add these via JAVA_OPTS is mentioned here: http://stackoverflow.com/questions/7738794/add-jvm-options-in-tomcat.
+
+-XX:MaxPermSize=768M
+-Xmx1024M
+-Dproperty-override=/Java_Projects/user/private/override.properties
+-Ddatabase.url=jdbc:mysql://localhost:3306/broadleafcommerce
+-Ddatabase.user=myuser
+-Ddatabase.password=my password
+-Ddatabase.driver=com.mysql.jdbc.Driver
+-javaagent:/Java_Projects/spring-instrument-3.2.2.RELEASE.jar
+
+You should change file system paths and jdbc urls in the JVM parameters to match your environment. I have also attached a sample override.properties (see the property-override JVM parameter above) file that is useful for changing some default settings for Broadleaf Commerce. In the lib directory of the startup project, I have included a copy of spring-instument-3.2.2.RELEASE.jar for your convenience. Do not place the spring instrument jar in your war file or in the Tomcat lib directory. Instead, place this file in a benign external directory and reference that location in the JVM params described above.
+
+There is documentation available for Broadleaf Commerce in general at http://docs.broadleafcommerce.org. Some enterprise module documentation requires secure access (http://docs.broadleafcommerce.org/core/current/modules). When accessing secured module documentation, the site will prompt you for login information, or will allow you to register for an account. Please register for a docs account that can be used by relevant parties in your organization. Once your registration is confirmed, you will be able to access the secured areas.

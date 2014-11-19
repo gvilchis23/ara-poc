@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+    <bean id="blRegistrationEmailInfo" parent="blEmailInfo">
+        <property name="subject" value="You have successfully registered!"/>        
+        <property name="emailTemplate" value="register-email"/>
+    </bean>
+    
+    <bean id="blForgotPasswordEmailInfo" parent="blEmailInfo">
+        <property name="subject" value="Reset password request"/>
+        <property name="emailTemplate" value="resetPassword-email"/>
+    </bean>
+    
+    <bean id="blOrderConfirmationEmailInfo" parent="blEmailInfo">
+        <property name="subject" value="Your order with The Heat Clinic"/>
+        <property name="emailTemplate" value="orderConfirmation-email"/>
+    </bean>
+                  
+</beans>
